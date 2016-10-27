@@ -77,7 +77,7 @@ def maybe_download_and_extract():
 
 #TODO : GET TRAINING SET SIZE AND CHANGE THIS
 def get_data(num_training=6, num_validation=2, num_test=2):
-    X_train,  y_train = _read_data()
+    X_train,  y_train, file_names = _read_data()
     #12 is number of images
     X_train = X_train.reshape(12, 512, 512, 3)
 
@@ -110,16 +110,17 @@ def get_data(num_training=6, num_validation=2, num_test=2):
 def _read_data():
     xs = []
     ys = []
-
+    file_names = []
     print "Reading csv file for labels ..."
     labels = pd.read_csv('training_labels_subset.csv', header=0)
     print "Reading images and assigning labels ..."
 
     for file in os.listdir('images'):
+        file_names.append(file)
         xs.append(ndimage.imread('images/' + file))
         ys.append(labels[labels['image'] == re.sub('.jpeg','', file)].level)
 
     X_train = np.concatenate(xs)
     y_train = np.concatenate(ys)
     # X_test, y_test = _read_cifar10_file(os.path.join(DATA_DIR, 'cifar-10-batches-py', 'test_batch'))
-    return X_train,  y_train
+    return X_train,  y_train, file_names

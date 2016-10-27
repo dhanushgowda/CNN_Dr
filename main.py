@@ -53,9 +53,9 @@ def run_training(data):
         sess = tf.Session()
 
         sess.run(init)
-        c,d = data.train.next_batch(BATCH_SIZE)
-        a = sess.run(logits,feed_dict={images_pl: c})
-        print a
+        # c,d = data.train.next_batch(BATCH_SIZE)
+        # a = sess.run(logits,feed_dict={images_pl: c})
+        # print a
         summary_writer = tf.train.SummaryWriter("summary", sess.graph)
 
         for step in range(N_EPOCH * (DS_SIZE // BATCH_SIZE)):

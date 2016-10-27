@@ -5,6 +5,18 @@
     <title>op</title>
 </head>
 <body>
-    {{ op_val }}
+<!--{% for entry in op_val %}&ndash;&gt;-->
+<!--<img src="../static/images/{{ entry }}" alt="blah"/>-->
+<!--<div>{{ entry }}</div>-->
+<!--{% endfor %}-->
+
+{% for en in data %}
+<img src="../static/images/{{ en[2] }}" alt="blah" height="100" width="100"/>
+<div>Actual - {{ en[1] }}</div>
+<div>Predicted - {{ en[0] }}</div>
+<br>
+<br>
+{% endfor %}
+
 </body>
 </html>

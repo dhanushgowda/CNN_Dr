@@ -8,4 +8,5 @@ images/
 .DS_Store
 *.csv
 tfenv/
-cifar10_gpu/
+cifar10_gpu/*
+static/
