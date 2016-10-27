@@ -5,7 +5,7 @@ import numpy as np
 import graph
 import input
 
-BATCH_SIZE = 128  # 100
+BATCH_SIZE = 1  # 100
 #TODO:FIND TRAINING SET SIZE
 DS_SIZE = 4000    # 49000
 N_EPOCH = 25
@@ -42,17 +42,20 @@ def run_training(data):
         labels_pl = tf.placeholder(tf.int32, shape=[BATCH_SIZE])
 
         logits = graph.inference(images_pl)
+
         loss = graph.loss(logits, labels_pl)
         train_op = graph.train(loss, 0.0001)
         eval_correct = graph.evaluate(logits, labels_pl)
-
+        saver = tf.train.Saver(tf.trainable_variables())
         summary_op = tf.merge_all_summaries()
 
         init = tf.initialize_all_variables()
         sess = tf.Session()
 
         sess.run(init)
-
+        c,d = data.train.next_batch(BATCH_SIZE)
+        a = sess.run(logits,feed_dict={images_pl: c})
+        print a
         summary_writer = tf.train.SummaryWriter("summary", sess.graph)
 
         for step in range(N_EPOCH * (DS_SIZE // BATCH_SIZE)):
@@ -71,9 +74,10 @@ def run_training(data):
                     summary_writer.flush()
 
             if step % 100 == 0 or step == N_EPOCH * (DS_SIZE // BATCH_SIZE) - 1:
+                save_path = saver.save(sess, "model.ckpt")
+                print("Model saved in file: %s" % save_path)
                 print('Training Data Eval:')
                 do_eval(sess, eval_correct, images_pl, labels_pl, data.train)
-
                 print('Validation Data Eval:')
                 do_eval(sess, eval_correct, images_pl, labels_pl, data.validation)
 

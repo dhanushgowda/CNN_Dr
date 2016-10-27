@@ -10,7 +10,7 @@ from scipy import ndimage
 import pandas as pd
 import re
 
-DATA_DIR = 'data/images'
+DATA_DIR = 'images'
 DATA_URL = 'http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz'
 
 
@@ -78,7 +78,8 @@ def maybe_download_and_extract():
 #TODO : GET TRAINING SET SIZE AND CHANGE THIS
 def get_data(num_training=6, num_validation=2, num_test=2):
     X_train,  y_train = _read_data()
-    X_train = X_train.reshape(10, 512, 512, 3)
+    #12 is number of images
+    X_train = X_train.reshape(12, 512, 512, 3)
 
     # Subsample the data
     mask = range(num_training, num_training + num_validation)
@@ -111,11 +112,11 @@ def _read_data():
     ys = []
 
     print "Reading csv file for labels ..."
-    labels = pd.read_csv('data/training_labels_subset.csv', header=0)
+    labels = pd.read_csv('training_labels_subset.csv', header=0)
     print "Reading images and assigning labels ..."
 
-    for file in os.listdir('data/images/'):
-        xs.append(ndimage.imread('data/images/' + file))
+    for file in os.listdir('images'):
+        xs.append(ndimage.imread('images/' + file))
         ys.append(labels[labels['image'] == re.sub('.jpeg','', file)].level)
 
     X_train = np.concatenate(xs)

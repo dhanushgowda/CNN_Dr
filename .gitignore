@@ -2,3 +2,10 @@
 data/
 summary/
 *.pyc
+*.ckpt
+*.ckpt.*
+images/
+.DS_Store
+*.csv
+tfenv/
+cifar10_gpu/

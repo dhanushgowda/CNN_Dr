@@ -1,6 +1,8 @@
 import tensorflow as tf
+from tensorflow.models.image.cifar10 import cifar10
+from tensorflow.models.image.cifar10.cifar10 import MOVING_AVERAGE_DECAY
 
-BATCH_SIZE = 128
+BATCH_SIZE = 1
 
 
 def inference(images):
@@ -52,9 +54,9 @@ def inference(images):
     # softmax
     with tf.variable_scope('softmax') as scope:
         # weights = tf.get_variable("l2weights", [BATCH_SIZE, 10], initializer=tf.contrib.layers.xavier_initializer())
-        weights = tf.Variable(tf.truncated_normal([BATCH_SIZE, 10], stddev=0.04))
+        weights = tf.Variable(tf.truncated_normal([BATCH_SIZE, 5], stddev=0.04))
 
-        biases = tf.Variable(tf.zeros([10]))
+        biases = tf.Variable(tf.zeros([5]))
         softmax_linear = tf.matmul(local2, weights) + biases
         tf.scalar_summary("softmax_weights", tf.reduce_mean(weights))
 
@@ -89,7 +91,7 @@ def loss(logits, labels):
 
 def train(total_loss, learning_rate):
     _add_loss_summaries(total_loss)
-    optim = tf.train.AdamOptimizer(learning_rate) # adam optimizer is an improvement on graadient descent
+    optim = tf.train.AdamOptimizer(learning_rate)  # adam optimizer is an improvement on graadient descent
     global_step = tf.Variable(0, name='global_step', trainable=False)
     return optim.minimize(total_loss, global_step=global_step)
 
