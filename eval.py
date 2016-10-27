@@ -43,7 +43,7 @@ def run_prediction(data):
             logits_op, lab = sess.run([logits, labels_pl], feed_dict=feed_dict)
 
             # print logits_op[0], logits_op[0].argmax(), lab, data.labels[example]
-            ret.append([logits_op[0], lab])
+            ret.append([logits_op[0].argmax(), lab])
 
         return ret
 
